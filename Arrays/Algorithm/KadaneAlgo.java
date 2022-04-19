@@ -1,4 +1,4 @@
-package Arrays;
+package Arrays.Algorithm;
 
 public class KadaneAlgo {
 
