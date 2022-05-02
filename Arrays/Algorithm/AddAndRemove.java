@@ -1,5 +1,9 @@
 package Arrays.Algorithm;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+
 public class AddAndRemove {
 
     // Duplicate zeros 
@@ -120,15 +124,63 @@ public class AddAndRemove {
         return res ;
     }
 
+    static int[] sortEvenOdd(int[] nums){
+
+        if(nums.length==1 || nums.length ==2){
+            return nums ;
+        }
+        int even[] ; 
+        if(nums.length%2!=0){
+            even = new int[nums.length/2+1] ;
+        }else{
+
+            even = new int[nums.length/2] ;
+        }
+        int[] odd = new int[nums.length/2];
+        
+        int ei = 0 ; 
+        int oi = 0 ;
+        
+        for(int i = 0 ; i < nums.length ; i+=2){
+            even[ei] = nums[i] ;
+            ei ++ ;
+
+            if(i==nums.length-1){
+                break ;
+            }
+            
+            odd[oi] = nums[i+1] ;
+            oi++ ;
+        }
+        
+        Arrays.sort(even) ;
+        Arrays.sort(odd , Collections.reverseOrder()) ;
+        
+        int trk = 0 ; 
+        for(int i = 0; i < nums.length ; i+=2){
+            nums[i] = even[trk] ;
+            if(i==nums.length-1){
+                break ;
+            }
+            nums[i+1] = odd[trk] ;
+
+            trk++ ;
+            
+        }
+        
+        return nums ;
+        
+    }
+
     public static void main(String[] args) {
-        int[] a = {1,1,2} ;
-        // int[] b = {2,5,6} ;
+        int[] a = {199,3,24};
+        // int[] b = {2,,5,,6} ;
         // // duplicateZero(a);
         // merge(a, b, 3, 3);
         // System.out.println(Arrays.toString(a));
-        // System.out.println(Arrays.toString(sqOfSorted(a)));
+        // System.out.println(removingEle(a));
 
-        System.out.println(removingEle(a));
+        System.out.println(Arrays.toString(sortEvenOdd(a)));
         
     }
 }

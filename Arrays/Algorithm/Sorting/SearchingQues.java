@@ -156,8 +156,28 @@ public class SearchingQues {
         return count ;
     }
 
+    static List<Integer> getDissapearNumber(int[] a){
+        List<Integer> ans = new ArrayList<>() ;
+    
+        int arr[] = new int[a.length] ;
+        Arrays.fill(arr, 0);
+        for(int i : a){
+            arr[i-1] += 1; 
+        }
+
+        for(int i = 0 ; i < arr.length ; i++){
+            if(arr[i] == 0){
+                ans.add(i+1);
+            }
+        }
+
+        return ans ;
+    }
+
     public static void main(String[] args) {
-        int[] a = {1,1,4,2,1,3};
-        System.out.println(heightChecker(a));
+        int[] a = {1,1};
+        // System.out.println(heightChecker(a));
+        System.out.println(getDissapearNumber(a));
     }
 }
+ 
