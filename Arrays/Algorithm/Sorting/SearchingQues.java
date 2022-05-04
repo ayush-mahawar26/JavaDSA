@@ -3,7 +3,6 @@ package Arrays.Algorithm.Sorting;
 import java.util.*;
 
 public class SearchingQues {
-    
     static boolean checkNDouble(int arr[]){
 
         HashSet<Integer> set = new HashSet<>() ;

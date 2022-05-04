@@ -1,13 +1,26 @@
 package Arrays.Algorithm;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.* ;
 
 public class AddAndRemove {
 
-    // Duplicate zeros 
+    static int[] twoSum(int nums[] , int target){
+        
+        HashMap<Integer , Integer> mp = new HashMap<>() ;
+        
+        for(int i = 0 ; i < nums.length ; i++){
+            int find = target - nums[i] ;
+            if(mp.containsKey(find)){
+                return new int[] { i, mp.get(find)} ;
+            }else{
+                mp.put(nums[i], i) ;
+            }
+        }
 
+        return new int[] {0,0} ;
+    }
+
+    // Duplicate zeros 
     static void rightShift(int[] a , int s){
         int j = s+1 ; 
         for(int i = j ; i < a.length ; i++){
@@ -92,6 +105,26 @@ public class AddAndRemove {
 
     }
 
+    static boolean palindrome(int x){
+        if(x < 0 ){
+            return false ;
+        }
+
+        int num= x ; 
+        int ans = 0 ; 
+        while(num > 0){
+            int ld = num%10 ; 
+            ans = (ans*10) + ld ;
+            num = num/10 ;
+        }
+
+        if(ans == x){
+            return true ; 
+        }
+
+        return false;
+    }
+
 
     // Using - Two Pointer 
     static void reverseArray(int a[]){
@@ -154,8 +187,8 @@ public class AddAndRemove {
         }
         
         Arrays.sort(even) ;
-        Arrays.sort(odd , Collections.reverseOrder()) ;
-        
+        Arrays.sort(odd) ;
+
         int trk = 0 ; 
         for(int i = 0; i < nums.length ; i+=2){
             nums[i] = even[trk] ;
@@ -172,15 +205,37 @@ public class AddAndRemove {
         
     }
 
+    static int maxOperation(int[] a , int k){
+        int count = 0 ; 
+
+        ArrayList<Integer> check = new ArrayList<>() ;
+
+        for(var i : a){
+            int find = k-i ;
+            if(check.contains(find)){
+                count ++ ;
+                check.remove(new Integer(find)) ;
+            }else{
+                check.add(i) ;
+            }
+        }
+
+        return count ;
+
+    }
+
     public static void main(String[] args) {
-        int[] a = {199,3,24};
-        // int[] b = {2,,5,,6} ;
+        int[] a = {2,2,2,3,1,1,4,1};
+        // int[] b ,= {2,,5,,6} ;
         // // duplicateZero(a);
         // merge(a, b, 3, 3);
         // System.out.println(Arrays.toString(a));
         // System.out.println(removingEle(a));
 
-        System.out.println(Arrays.toString(sortEvenOdd(a)));
-        
+        // System.out.println(Arrays.toString(sortEvenOdd(a)));
+        // System.out.println(Arrays.toString(twoSum(a,17 )));
+
+        // System.out.println(palindrome(141));
+        System.out.println(maxOperation(a, 4));
     }
 }
