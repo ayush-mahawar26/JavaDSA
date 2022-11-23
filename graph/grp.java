@@ -2,27 +2,13 @@ package graph;
 
 import java.util.*;
 
-import javafx.scene.input.RotateEvent;
-
 public class grp {
 
-    private static class Rotten {
-        int x;
-        int y;
-        int time;
-
-        Rotten(int x, int y, int time) {
-            this.x = x;
-            this.y = y;
-            this.time = time;
-        }
-    }
-
-    static int[][] orangesInput(int n) {
+    static int[][] matrixInp(int r, int c) {
         Scanner sc = new Scanner(System.in);
-        int[][] oranges = new int[n][n];
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
+        int[][] oranges = new int[r][c];
+        for (int i = 0; i < r; i++) {
+            for (int j = 0; j < c; j++) {
                 oranges[i][j] = sc.nextInt();
             }
         }
@@ -31,57 +17,54 @@ public class grp {
         return oranges;
     }
 
-    static int orangesTime(int[][] oranges) {
-        Queue<Rotten> queue = new LinkedList<>();
-        int row = oranges.length;
-        int col = oranges[0].length;
-        for (int i = 0; i < row; i++) {
-            for (int j = 0; j < col; j++) {
-                if (oranges[i][j] == 2) {
-                    Rotten r = new Rotten(i, j, 0);
-                    queue.add(r);
-                }
+    static void dfs(int[][] grid, boolean[][] vis, int r, int c) {
+        vis[r][c] = true;
+        int row = grid.length;
+        int col = grid[0].length;
+
+        int dx[] = { -1, 0, 1, 0 };
+        int dy[] = { 0, 1, 0, -1 };
+        for (int i = 0; i < 4; i++) {
+            int newx = r + dx[i];
+            int newy = c + dy[i];
+
+            if (newx >= 0 && newx < row && newy >= 0 && newy < col && grid[newx][newy] == 1
+                    && vis[newx][newy] == false) {
+                dfs(grid, vis, newx, newy);
             }
         }
-        Rotten front = queue.peek();
-        // performing bfs
-        while (!queue.isEmpty()) {
-            front = queue.poll();
-            int x = front.x;
-            int y = front.y;
-            int time = front.time;
+    }
 
-            // iterate over four directions to rotten
-            int[] dx = { -1, 0, +1, 0 };
-            int[] dy = { 0, +1, 0, -1 };
+    static int numberOfIsland(int[][] grid) {
+        int r = grid.length;
+        int c = grid[0].length;
+        boolean[][] vis = new boolean[r][c];
+        int count = 0;
 
-            for (int i = 0; i < 4; i++) {
-                int newX = x + dx[i];
-                int newY = y + dy[i];
-
-                if (newX >= 0 && newY >= 0 && newX < row && newY < col && oranges[newX][newY] == 1) {
-                    oranges[newX][newY] = 2;
-                    time++;
-                    queue.add(new Rotten(newX, newY, time));
-                }
+        for (int i = 0; i < r; i++) {
+            for (int j = 0; j < c; j++) {
+                vis[i][j] = false;
             }
         }
 
-        if (front.time == 0)
-            return -1;
-        return front.time;
-
+        for (int i = 0; i < r; i++) {
+            for (int j = 0; j < c; j++) {
+                if (!vis[i][j] && grid[i][j] == 1) {
+                    dfs(grid, vis, i, j);
+                    count++;
+                }
+            }
+        }
+        return count;
     }
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        int n = sc.nextInt();
+        // int r = sc.nextInt();
+        // int c = sc.nextInt();
 
-        int[][] matrix = orangesInput(n);
-        int ans = orangesTime(matrix);
-
-        System.out.println(ans);
-
+        // int[][] matrix = matrixInp(r, c);
+        // System.out.println(numberOfIsland(matrix));
         sc.close();
     }
 }
