@@ -6,15 +6,15 @@ public class grp {
 
     static int[][] matrixInp(int r, int c) {
         Scanner sc = new Scanner(System.in);
-        int[][] oranges = new int[r][c];
+        int[][] matrix = new int[r][c];
         for (int i = 0; i < r; i++) {
             for (int j = 0; j < c; j++) {
-                oranges[i][j] = sc.nextInt();
+                matrix[i][j] = sc.nextInt();
             }
         }
 
         sc.close();
-        return oranges;
+        return matrix;
     }
 
     static void dfs(int[][] grid, boolean[][] vis, int r, int c) {
@@ -58,13 +58,81 @@ public class grp {
         return count;
     }
 
+    // nearest distance from 1
+
+    static class Pair {
+        int r;
+        int c;
+        int dis;
+
+        Pair(int x, int y, int dis) {
+            r = x;
+            c = y;
+            this.dis = dis;
+        }
+    }
+
+    static int[][] nearestDistance(int[][] adj) {
+        Queue<Pair> queue = new LinkedList<>();
+        boolean vis[][] = new boolean[adj.length][adj.length];
+        int[][] dist = new int[adj.length][adj.length];
+
+        for (int i = 0; i < adj.length; i++) {
+            for (int j = 0; j < adj.length; j++) {
+                if (adj[i][j] == 1) {
+                    queue.add(new Pair(i, j, 0));
+                    vis[i][j] = true;
+                }
+            }
+        }
+
+        while (!queue.isEmpty()) {
+            Pair front = queue.poll();
+            int row = adj.length;
+            int col = adj[0].length;
+            int x = front.r;
+            int y = front.c;
+            int dis = front.dis;
+            dist[x][y] = dis;
+
+            int[] dx = { -1, 0, 1, 0 };
+            int[] dy = { 0, 1, 0, -1 };
+
+            for (int i = 0; i < 4; i++) {
+                int nx = dx[i] + x;
+                int ny = dy[i] + y;
+
+                if (nx >= 0 && nx < row && ny >= 0 && ny < col) {
+                    if (adj[nx][ny] == 0 && vis[nx][ny] == false) {
+                        int nd = dis + 1;
+                        queue.add(new Pair(nx, ny, nd));
+                        vis[nx][ny] = true;
+                    }
+                }
+            }
+        }
+
+        return dist;
+
+    }
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        // int r = sc.nextInt();
-        // int c = sc.nextInt();
+        int r = sc.nextInt();
+        int c = sc.nextInt();
 
-        // int[][] matrix = matrixInp(r, c);
+        int[][] matrix = matrixInp(r, c);
         // System.out.println(numberOfIsland(matrix));
+
+        int[][] ans = nearestDistance(matrix);
+
+        for (int i = 0; i < r; i++) {
+            for (int j = 0; j < c; j++) {
+                System.out.print(ans[i][j] + " ");
+            }
+            System.out.println();
+        }
+
         sc.close();
     }
 }
